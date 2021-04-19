@@ -1,0 +1,9 @@
+*.png
+*.mp4
+*.avi
+checkpoint
+data
+
+__pycache__/
+*.py[cod]
+*$py.class
