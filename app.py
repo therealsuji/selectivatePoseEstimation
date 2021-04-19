@@ -8,7 +8,7 @@ import numpy as np
 from tools.infer_video_d2 import generate2dKeypoints
 from tools.prepare_data_2d_custom import process2D_keypoints
 from tools.inference_3d import generate_3d_inference
-
+from run_blender import generate_blend_file
 
 class Application(object):
 
@@ -94,15 +94,25 @@ class Application(object):
             output_file_name = images_to_video(self.image_folder, 'masked_output.mp4')
             keypoints_file = generate2dKeypoints(output_file_name)
             process2D_keypoints(keypoints_file)
-            generate_3d_inference('masked_output.mp4', True)
+            generate_3d_inference('masked_output.mp4', False)
+            generate_blend_file()
+            self.OpenMessageBox(QtWidgets.QMessageBox.Information,"Success","A blender file has been generated in your desktop")
         else:
-            msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Warning)
-            msg.setText("Error")
-            msg.setInformativeText('Please load a video first')
-            msg.setWindowTitle("Error")
-            msg.exec_()
+            self.OpenMessageBox(QtWidgets.QMessageBox.Warning,"Error","Please load a video first")
+            # msg = QtWidgets.QMessageBox()
+            # msg.setIcon(QtWidgets.QMessageBox.Warning)
+            # msg.setText("Error")
+            # msg.setInformativeText('Please load a video first')
+            # msg.setWindowTitle("Error")
+            # msg.exec_()
 
+    def OpenMessageBox(self,type,title,text):
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(type)
+            msg.setText(title)
+            msg.setInformativeText(text)
+            msg.setWindowTitle(title)
+            msg.exec_()
     def openFileBrowser(self):
         filepath = QtWidgets.QFileDialog.getOpenFileName(
             None, "Select Video", "~", "Video Files (*.mp4 *.avi )")[0]
